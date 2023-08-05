@@ -1,0 +1,63 @@
+@model CatalogItemViewModel
+
+@{
+    string iconType = Model.IsFavourite ? "fa-solid fa-heart" : "fa-regular fa-heart";
+    @* var request = ViewContext.HttpContext.Request;
+    string returnUrl = request.Path + request.QueryString.ToUriComponent(); *@
+}
+
+
+<div  class="col-md-4 d-flex">
+    <div class="card mb-4 product-wap rounded-0">
+        <div class="card rounded-0">
+            <img class="card-img rounded-0 img-fluid" src="~/img/books/@Model.PictureUri">
+            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                <ul class="list-unstyled">
+                    <li>
+                        <button onclick="updateFavourite('@Model.Id')" class="btn btn-success text-white">
+                            <div id="favIcon-@Model.Id">
+                                <i class="@iconType "></i>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <a class="btn btn-success text-white mt-2" asp-controller="Product" asp-action="Index"
+                            asp-route-id="@Model.Id"><i class="far fa-eye"></i></a></li>
+                    <li>
+                        <a class="btn btn-success text-white mt-2" asp-controller="Basket" asp-action="AddToCart"
+                            asp-route-id="@Model.Id">
+                            <i class="fas fa-cart-plus"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <a asp-controller="Product" asp-action="Index" asp-route-id="@Model.Id" class="h3 text-decoration-none">@Model.Name</a>
+            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                <li>@Model.AuthorName</li>
+                <li class="pt-2">
+                    <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                    <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                    <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                    <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                    <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                </li>
+            </ul>
+            <ul class="list-unstyled d-flex justify-content-center mb-1">
+               
+            </ul>
+            @if (Model.IsOnDiscount)
+            {
+                <p class="text-center mb-0"><small class="text-danger" style="text-decoration: line-through;">@Model.Price
+                        руб.</small>
+                    @Model.DiscountedPrice
+                    руб.</p>
+            }
+            else
+            {
+                <p class="text-center mb-0">@Model.Price руб.</p>
+            }
+        </div>
+    </div>
+</div>

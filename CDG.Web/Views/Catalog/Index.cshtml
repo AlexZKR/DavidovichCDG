@@ -1,0 +1,76 @@
+@model CatalogViewModel
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3">
+            <partial name="_CatalogFilterPartial" model="@Model.FilterInfo" />
+        </div>
+        <div class="col-lg-9">
+            @if (Model.FilterInfo!.SearchQuery != null)
+            {
+                <h2 class="mb-4" >Результаты запроса: "@Model.FilterInfo.SearchQuery"</h2>
+            }
+
+            @if (Model.CatalogItems.Count != 0 && (Model.FilterInfo.SearchQuery == "" || Model.FilterInfo.SearchQuery == null))
+            {
+                <div class="mx-4 mb-4">
+                    <partial name="_PaginationPartial" model="@Model.PaginationInfo" />
+                </div>
+            }
+            @* Prod cards *@
+            <div class="row" id="list">
+                <partial name="_CatalogListPartial" model="@Model" />
+            </div>
+            @* Prod cards *@
+
+            @if (Model.CatalogItems.Count != 0 && (Model.FilterInfo.SearchQuery == "" || Model.FilterInfo.SearchQuery == null))
+            {
+                <div class="mx-4">
+                    <partial name="_PaginationPartial" model="@Model.PaginationInfo" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<partial name="_PublishersPartial" />
+<!-- End Content -->
+
+@section Scripts
+{
+  <script>
+    function updateFavourite(itemId)
+    {
+      var divId = `#product-${itemId}`;
+        console.log("Sending book id " + itemId);
+      $.ajax(
+      {
+        url: "Catalog/UpdateFav",
+        type: "get",
+        data:
+        {
+          itemId:itemId,
+        },
+        statusCode: {
+            200: function (data, textStatus, jqXHR)
+            {
+                console.log(textStatus + ": " + jqXHR.status);
+                console.log("Item id " + itemId + "; isFavourite: " + data.isFavourite);
+                console.log("Updating catalog card id " + itemId);
+                if(data.isFavourite == true)
+                {
+                    $("#favIcon-" + itemId).find('i').removeClass('fa-regular fa-heart');
+                    $("#favIcon-" + itemId).find('i').addClass('fa-solid fa-heart');          }
+                else
+                {
+                    $("#favIcon-" + itemId).find('i').removeClass('fa-solid fa-heart');
+                    $("#favIcon-" + itemId).find('i').addClass('fa-regular fa-heart');
+                }
+            },
+            401: function(data, textStatus, jqXHR){
+                window.location.href = "http://localhost:5092/Identity/Account/Login?ReturnUrl=%2FHome%2FIndex";
+            },
+        },
+      });
+    }
+    </script>
+}

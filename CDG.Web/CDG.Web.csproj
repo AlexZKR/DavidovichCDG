@@ -28,4 +28,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CDG.BLL\CDG.BLL.csproj" />
+    <ProjectReference Include="..\CDG.DAL\CDG.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

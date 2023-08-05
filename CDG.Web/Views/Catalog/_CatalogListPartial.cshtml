@@ -1,0 +1,23 @@
+@model CatalogViewModel
+
+@foreach (var item in Model.CatalogItems!)
+{
+    <partial name="_ProductCardPartial" model=@item />
+}
+@if (Model.CatalogItems.Count == 0)
+{
+    <div class="">
+            <div class="h-200 my-5 py-5 services-icon-wap shadow">
+                <div class="h1 text-success text-center">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                </div>
+                <div class="row px-4 mx-4">
+                    <h2 class="h5 mt-2 text-center fw-light">К сожалению ничего не найдено :(</h2>
+                    <a asp-controller="Catalog" asp-action="Index" class="btn btn-success mt-4 fw-bold ">
+                        Попробуйте изменить текст запроса
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </a>
+                </div>
+            </div>
+    </div>
+}

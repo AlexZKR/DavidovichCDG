@@ -1,0 +1,200 @@
+@model ProductDetailsViewModel
+
+@{
+    string iconType = Model.IsFavourite ? "fa-regular fa-heart" : "fa-solid fa-heart";
+    string labelType = Model.IsFavourite ? "Убрать из любимых" : "Добавить в любимые";
+}
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-0">
+                    <img class="card-img img-fluid" src="~/img/books/@Model.PictureUrl" alt="Card image cap"
+                        id="product-detail">
+                </div>
+            </div>
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="favIconTop-@Model.Id">
+                            <h1 class="h2 col-6"> @Model.Name
+                                @if(Model.IsFavourite == true)
+                                {
+                                    <i class="fa-solid fa-heart text-danger" ></i>
+                                }
+                                else
+                                {
+
+                                    <i class="fa-solid fa-heart text-danger" hidden ></i>
+                                }
+                            </h1>
+                        </div>
+                        @if (Model.IsOnDiscount)
+                        {
+                            <p class="h3 py-2"><small class="text-danger"
+                                    style="text-decoration: line-through;">@Model.Price
+                                    руб.</small>
+                                @Model.DiscountedPrice
+                                руб.</p>
+                        }
+                        else
+                        {
+                            <p class="h3 py-2">@Model.Price руб.</p>
+                        }
+
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h5>Автор:</h5>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text"><strong>@Model.AuthorName</strong></p>
+                            </li>
+                        </ul>
+
+                        <h5>Описание:</h5>
+                        <p>@Model.Description</p>
+
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <th colspan="2">
+                                    <h5>Характеристики:</h5>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(m => m.Genre)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Genre)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(m => m.Language)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Language)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(m => m.Cover)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Cover)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(m => m.PagesCount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => m.PagesCount)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(m => m.IsAvailable)
+                                    </td>
+                                    <td>
+                                        @if (Model.IsAvailable)
+                                        {
+                                            <p class="text-success fw-bold mb-0">Да</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger fw-bold mb-0">Нет</p>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                            <div class="row pb-3">
+                                <div class="container text-center">
+                                    <button onclick="updateFavourite('@Model.Id')" class="btn btn-success text-white">
+
+                                        <div id="favIcon-@Model.Id">
+                                            <i class="@iconType ">
+                                                @if(Model.IsFavourite)
+                                                {
+                                                    <span>Убрать из любимых</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Добавить в любимые</span>
+                                                }
+                                            </i>
+                                        </div>
+                                    </button>
+
+                                    <a asp-controller="Basket" asp-action="AddToCart" asp-route-id="@Model.Id"
+                                        class="btn btn-success btn-lg mx-4 w-45">
+                                        <i class="fa-solid fa-cart-shopping"> Добавить в корзину</i>
+
+                                    </a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        function updateFavourite(itemId)
+    {
+      var divId = `#product-${itemId}`;
+        console.log("Sending book id " + itemId);
+      $.ajax(
+      {
+        url: "/Catalog/UpdateFav",
+        type: "get",
+        data:
+        {
+          itemId:itemId,
+        },
+        statusCode:
+        {
+            200: function (data, textStatus, jqXHR)
+            {
+            console.log(textStatus + ": " + jqXHR.status);
+
+            console.log("Item id " + itemId + "; isFavourite: " + data.isFavourite);
+            console.log("Updating page of product id " + itemId);
+            if(data.isFavourite == true)
+            {
+                $("#favIcon-" + itemId).find('i').removeClass('fa-solid fa-heart');
+                $("#favIcon-" + itemId).find('i').addClass('fa-regular fa-heart');
+                $("#favIcon-" + itemId).find('i').text(' Убрать из любимых');
+
+                $("#favIconTop-" + itemId).find('i').removeClass('fa-regular fa-heart');
+                $("#favIconTop-" + itemId).find('i').addClass('fa-solid fa-heart');
+                $("#favIconTop-" + itemId).find('i').removeAttr('hidden');
+            }
+            else
+            {
+                $("#favIcon-" + itemId).find('i').removeClass('fa-regular fa-heart');
+                $("#favIcon-" + itemId).find('i').addClass('fa-solid fa-heart');
+                $("#favIcon-" + itemId).find('i').text(' Добавить в любимые');
+
+
+                $("#favIconTop-" + itemId).find('i').removeClass('fa-solid fa-heart');
+                $("#favIconTop-" + itemId).find('i').addClass('fa-regular fa-heart');
+            }
+            },
+            401: function(data, textStatus, jqXHR)
+            {
+                window.location.href = "http://localhost:5092/Identity/Account/Login?ReturnUrl=%2FHome%2FIndex";
+            },
+        }
+      });
+    }
+    </script>
+}

@@ -1,0 +1,146 @@
+@model BasketViewModel
+
+<section class="h-100" style="background-color: #C7E1D4;">
+  <div class="container h-100 py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-10">
+        @if (@Model.Items.Count > 0)
+        {
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-normal mb-0 text-black">Корзина</h3>
+            <div>
+              <p class="mb-0">
+                Количество товара:
+                <span id="basketCount" class="text-muted">
+                  @Model.TotalItems
+                </span>
+              </p>
+            </div>
+          </div>
+          <div id="list">
+            <partial name="_BasketListPartial" model="@Model" />
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row text-center">
+                <a asp-controller="Order" asp-action="Index" class="btn btn-success btn-block btn-lg col mx-4">Оформить
+                  заказ</a>
+                <div id="basketSum" class="col fw-bold">
+                  Сумма: @Model.TotalPrice.ToString("N2") руб.
+                </div>
+                <div id="basketDiscount" class="col fw-bold">
+                  Скидка: @Model.TotalDiscount.ToString("N2") руб.
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        else
+        {
+          <partial name="_BasketEmptyPartial" />
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts
+{
+  <script>
+    function updateListItem(itemId, mode, basketId)
+    {
+      var divId = `#li-${itemId}`;
+      $.ajax(
+      {
+        url: "Basket/ChangeQuantity",
+        type: "get",
+        data:
+        {
+          itemId:itemId,
+          mode:mode,
+        },
+        success: function (data, textStatus, jqXHR)
+        {
+          console.log(textStatus + ": " + jqXHR.status);
+          if(jqXHR.status == 204)
+          {
+            console.log("refreshing")
+            window.location.reload()
+          }
+          if(data == 0)
+          {
+            $(divId).remove();
+            getBasketInfo(basketId);
+          }
+          else
+          {
+            $(divId).html(data);
+            getBasketInfo(basketId);
+          }
+        }
+      });
+    }
+    function removeListItem(itemId, basketId)
+    {
+      var divId = `#li-${itemId}`;
+      $.ajax(
+      {
+        url: "Basket/Remove",
+        type: "delete",
+        data:
+        {
+          itemId:itemId,
+          basketId:basketId,
+        },
+        success: function (data, textStatus, jqXHR)
+        {
+          console.log(textStatus + ": " + jqXHR.status);
+          if(jqXHR.status == 204)
+          {
+              data = 0;
+              console.log("setting basket count to 0");
+              getBasketInfo(basketId)
+              window.location.reload()
+          }
+          else
+          {
+            console.log("removing itemId" + itemId)
+            getBasketInfo(basketId)
+            $(divId).remove();
+          }
+        }
+      }
+      );
+    }
+
+    function setBasketInfo(data)
+    {
+      $("#basketCountPill").html(data.basketCount);
+      $("#basketCount").html(data.basketCount);
+      $("#basketSum").html("Сумма: " + data.basketPrice.toFixed(2) + " руб.");
+      $("#basketDiscount").html("Скидка: " + data.basketDiscount.toFixed(2) + " руб.");
+    }
+
+    function getBasketInfo(basketId)
+    {
+      $.ajax(
+      {
+        url: "GetBasketInfo",
+        type: "get",
+        data:
+        {
+          basketId: basketId,
+        },
+        success: function (data, textStatus, jqXHR)
+        {
+          console.log(textStatus + ": " + jqXHR.status);
+          console.log("Got basketCount: " + data.basketCount);
+          console.log("Got basketPrice: " + data.basketPrice);
+          console.log("Got basketDiscount: " + data.basketDiscount);
+          setBasketInfo(data);
+        }
+      });
+    }
+  </script>
+}
