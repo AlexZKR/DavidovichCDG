@@ -1,10 +1,10 @@
-using BookShop.DAL.Data;
+using CDG.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookShop.DAL;
+namespace CDG.DAL;
 
 public static class DbConfiguration
 {
@@ -20,7 +20,7 @@ public static class DbConfiguration
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("sqliteAppDbContext")));
 
-            services.AddDbContext<appIdentityDbContext>(options =>
+            services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("sqliteIdentityDbContext")));
         }
         else
@@ -28,7 +28,7 @@ public static class DbConfiguration
            services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("sqlAppDbContext")));
 
-            services.AddDbContext<appIdentityDbContext>(options =>
+            services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("sqlIdentityDbContext")));
         }
     }

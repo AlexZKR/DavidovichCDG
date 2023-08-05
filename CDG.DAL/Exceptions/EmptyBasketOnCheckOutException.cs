@@ -1,4 +1,4 @@
-namespace BookShop.DAL.Exceptions;
+namespace CDG.DAL.Exceptions;
 
 public class EmptyBasketOnCheckoutException : Exception
 {

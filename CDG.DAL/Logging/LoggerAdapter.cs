@@ -1,8 +1,8 @@
 ﻿
-using BookShop.BLL.Interfaces;
+using CDG.BLL.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace BookShop.DAL.Logging;
+namespace CDG.DAL.Logging;
 
 public class LoggerAdapter<T> : IAppLogger<T>
 {

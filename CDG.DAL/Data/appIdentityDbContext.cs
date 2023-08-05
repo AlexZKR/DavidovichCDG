@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookShop.DAL.Data;
+namespace CDG.DAL.Data;
 
-public class appIdentityDbContext : IdentityDbContext<ApplicationUser>
+public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
 {
-    public appIdentityDbContext(DbContextOptions<appIdentityDbContext> options)
+    public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
         : base(options)
     {
     }

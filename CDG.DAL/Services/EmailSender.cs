@@ -1,7 +1,7 @@
 ﻿
-using BookShop.BLL.Interfaces;
+using CDG.BLL.Interfaces;
 
-namespace BookShop.DAL.Services;
+namespace CDG.DAL.Services;
 
 // This class is used by the application to send email for account confirmation and password reset.
 // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
