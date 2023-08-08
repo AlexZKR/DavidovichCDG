@@ -33,7 +33,7 @@ public class CatalogController : Controller
     {
         string username = HttpContext.GetUsername();
         var catalogModel = await catalogViewModelService
-        .GetCatalogViewModel(username, SearchQuery, pageId ?? 0, AuthorId: author, genre: genre, lang: lang!, cover: cover);
+        .GetCatalogViewModel(username, SearchQuery, pageId ?? 0, genre: genre, lang: lang!, cover: cover);
 
         return View(catalogModel);
     }

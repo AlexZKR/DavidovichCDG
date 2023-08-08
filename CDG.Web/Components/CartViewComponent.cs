@@ -1,7 +1,7 @@
-using BookShop.BLL.Interfaces;
+using CDG.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookShop.WebComponents;
+namespace CDG.WebComponents;
 
 public class CartViewComponent : ViewComponent
 {
