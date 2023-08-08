@@ -47,8 +47,8 @@ using (var scope = app.Services.CreateScope())
         var context = scopedProvider.GetRequiredService<AppDbContext>();
         await DbSeeder.SeedDataAsync(context, app.Logger);
 
-        var idContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
-        await DbSeeder.SeedIdDataAsync(idContext, app.Logger);
+        // var idContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
+        // await DbSeeder.SeedIdDataAsync(idContext, app.Logger);
     }
     catch (System.Exception)
     {
