@@ -7,11 +7,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DataConnection") ?? throw new InvalidOperationException("Connection string 'DataConnection' not found.");
 
-builder.Services.AddDbContext<Data>(options => options.UseSqlite(connectionString));
-
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Data>();
-
-
 // if (!builder.Environment.IsDevelopment())
 // {
 //     builder.Configuration["UseSqlite"] = "false";
@@ -55,7 +50,7 @@ using (var scope = app.Services.CreateScope())
         await DbSeeder.SeedDataAsync(context, app.Logger);
 
         var idContext = scopedProvider.GetRequiredService<AppIdentityDbContext>();
-        // await DbSeeder.SeedIdDataAsync(idContext, app.Logger);
+        await DbSeeder.SeedIdDataAsync(idContext, app.Logger);
     }
     catch (System.Exception)
     {

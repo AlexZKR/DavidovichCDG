@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using CDG.BLL.Interfaces;
+using CDG.DAL.Data;
 using Microsoft.AspNetCore.Authorization;
-using CDG.Dal.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
@@ -46,6 +46,7 @@ namespace CDG.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Эл. почта")]
             [EmailAddress]
             public string Email { get; set; }
         }

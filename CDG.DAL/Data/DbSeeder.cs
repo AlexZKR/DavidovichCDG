@@ -16,17 +16,17 @@ public class DbSeeder
 
             if (!await context.KeyCategorys.AnyAsync())
             {
-                await context.KeyCategorys.AddRangeAsync(
-                    GetPreconfiguredKeyCategorys());
+                // await context.KeyCategorys.AddRangeAsync(
+                //     GetPreconfiguredKeyCategorys());
 
-                await context.SaveChangesAsync();
+                // await context.SaveChangesAsync();
             }
             if (!await context.DigitalKeys.AnyAsync())
             {
-                await context.DigitalKeys.AddRangeAsync(
-                    GetPreconfiguredDigitalKeys());
+                // await context.DigitalKeys.AddRangeAsync(
+                //     GetPreconfiguredDigitalKeys());
 
-                await context.SaveChangesAsync();
+                // await context.SaveChangesAsync();
             }
         }
         catch (Exception ex)

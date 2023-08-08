@@ -2,19 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using CDG.Dal.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using CDG.DAL.Data;
+using CDG.BLL;
+using Ardalis.GuardClauses;
+using CDG.BLL.Interfaces;
 
 namespace CDG.Web.Areas.Identity.Pages.Account
 {
@@ -22,66 +18,41 @@ namespace CDG.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IBasketService basketService;
+        private readonly IBasketQueryService basketQueryService;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger,
+        IBasketService basketService,
+        IBasketQueryService basketQueryService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this.basketService = basketService;
+            this.basketQueryService = basketQueryService;
+
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
+        public string BasketCount = "";
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string ErrorMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
+
+            [Required (ErrorMessage = "Обязательное поле")]
             [EmailAddress]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
+            [Required (ErrorMessage = "Обязательное поле")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Запомнить меня?")]
             public bool RememberMe { get; set; }
         }
 
@@ -100,6 +71,8 @@ namespace CDG.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+            var count = await basketQueryService.CountTotalBasketItemsAsync(Input?.Email);
+            BasketCount = count.ToString();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -116,6 +89,8 @@ namespace CDG.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    await TransferAnonymousBasketToUserAsync(Input?.Email);
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -136,6 +111,19 @@ namespace CDG.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private async Task TransferAnonymousBasketToUserAsync(string userName)
+        {
+            if (Request.Cookies.ContainsKey(SD.BASKET_COOKIENAME))
+            {
+                var anonymousId = Request.Cookies[SD.BASKET_COOKIENAME];
+                if (Guid.TryParse(anonymousId, out var _))
+                {
+                    Guard.Against.NullOrEmpty(userName, nameof(userName));
+                    await basketService.TransferBasketAsync(anonymousId, userName);
+                }
+                Response.Cookies.Delete(SD.BASKET_COOKIENAME);
+            }
         }
     }
 }
