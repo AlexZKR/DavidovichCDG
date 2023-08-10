@@ -1,0 +1,34 @@
+@model PaginationViewModel
+
+@* for viewing purposes we display pages +1 *@
+@{
+     var actualPageView = @Model.ActualPage;
+}
+
+<div class="esh-pager">
+    <div class="container-fluid">
+        <article class="esh-pager-wrapper row">
+            <nav>
+                <div class="col-md-2 col-xs-12">
+                    <button id="prevPage" onclick="prevPage(document.getElementById('actualPage').textContent)" class="btn btn-primary"
+                        aria-label="Previous">
+                        Предыдущая
+                    </button>
+                </div>
+
+                <div class="col-md-8 col-xs-12 my-2">
+                    <span class="esh-pager-item">
+                        Всего <span id="totalItems">@Model.TotalItems</span> товаров - Страница <span id="actualPage"> @actualPageView </span> -
+                        <span id="totalPages">@Model.TotalPages</span>
+                    </span>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <button id="nextPage" onclick="nextPage(document.getElementById('actualPage').textContent)" class="btn btn-primary"
+                        aria-label="Next">
+                        Следующая
+                    </button>
+                </div>
+            </nav>
+        </article>
+    </div>
+</div>

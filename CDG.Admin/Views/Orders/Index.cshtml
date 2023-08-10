@@ -1,0 +1,66 @@
+@model OrdersPageViewModel
+@if(Model.IsSuccess == false)
+{
+  <h1 class="text-danger text-center mt-5">
+    @Model.StatusMessage
+  </h1>
+}
+else
+{
+
+<div class="container-1 row ">
+  <div class="col-2 mx-4 mt-2">
+    <a href="Orders" class="nav-link  h3 mt-4">Управление заказами</a>
+    <hr>
+    <h4>Пользователи:</h4>
+  <div class="list-group">
+
+  @foreach (var item in Model.Buyers)
+  {
+    <button onclick="getBuyer('@item.Id','@item.Name','@item.UnproccessedOrdersCount')" id="getBuyer" class="list-group-item list-group-item-action link-get-user" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">@item.Name</h5>
+          @if(item.UnproccessedOrdersCount > 0)
+          {
+            <span id="orderCount" class="badge bg-success rounded-pill fw-bold mt-1">@item.UnproccessedOrdersCount</span>
+          }
+        </div>
+        <p class="mb-1">@item.PhoneNumber</p>
+        <small>@item.Id</small>
+      </button>
+
+  }
+    </div>
+</div>
+  <div class="col mt-5">
+<!-- Nav tabs -->
+    <div id="orderMenu">
+     @* there goes the partial *@
+    </div>
+  </div>
+</div>
+}
+@section Scripts
+{
+  <script>
+
+    function getBuyer(buyerId,buyerName,count)
+    {
+      $.ajax(
+      {
+        url: "Orders/GetBuyersOrders/" + buyerId,
+        type: "get",
+        data:
+        {
+          buyerId:buyerId,
+          buyerName:buyerName,
+          count:count
+        },
+        success: function (result)
+        {
+          $("#orderMenu").html(result);
+        }
+      });
+    }
+  </script>
+}

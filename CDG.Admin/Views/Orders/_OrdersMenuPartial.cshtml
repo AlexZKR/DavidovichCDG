@@ -1,0 +1,35 @@
+@model OrdersPageViewModel
+@if(@Model.BuyerName != "")
+{
+  <div class="d-flex justify-content-start">
+    <h1>Управление заказами: @Model.BuyerName</h1>
+    @* <button onclick="getBuyer('@Model.BuyerId','@Model.BuyerName','@Model.UnproccessedOrdersCount')" id="getBuyer" class="btn btn-primary mx-4 h3">
+      Обновить <i class="fa-solid fa-arrows-rotate"></i>
+    </button> *@
+  </div>
+}
+else
+{
+  <h1>Управление заказами</h1>
+}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#msg">Необработанные заказы
+      <span id="orderCount" class="badge bg-success rounded-pill fw-bold mt-1">@Model.UnproccessedOrdersCount</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a  class="nav-link" data-bs-toggle="tab" href="#pro">История заказов</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+
+<div class="tab-content">
+  <div class="tab-pane container-1 active" id="msg">
+    <partial name="_OrdersTablePartial" model="@Model.UnproccessedOrders" />
+  </div>
+  <div class="tab-pane container-1" id="pro">
+     <partial name="_OrdersTablePartial" model="@Model.ProccessedOrders" />
+  </div>
+</div>
