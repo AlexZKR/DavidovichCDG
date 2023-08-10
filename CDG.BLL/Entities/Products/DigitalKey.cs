@@ -11,13 +11,7 @@ public class DigitalKey : BaseProduct, IAggregateRoot
 
     [DataType(DataType.Text)]
     [StringLength(500)]
-    [Display(Name = "Платформа")]
-    public Platform Platform { get; set; }
-
-    [DataType(DataType.Text)]
-    [StringLength(500)]
-    [Display(Name = "Язык")]
-    public Language Language { get; set; }
+    public string Key { get; set; }
 
     [DataType(DataType.Text)]
     [StringLength(500)]
@@ -30,5 +24,8 @@ public class DigitalKey : BaseProduct, IAggregateRoot
     [Display(Name = "Категория")]
     public KeyCategory KeyCategory { get; set; } = null!;
 
-
+    public DigitalKey(string key)
+    {
+        Key = key;
+    }
 }
