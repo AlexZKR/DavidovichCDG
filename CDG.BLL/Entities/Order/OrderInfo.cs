@@ -11,16 +11,10 @@ public class OrderInfo //Value object
     {
     }
 
-    public OrderInfo(DateTime OrderDate,
-                     PaymentType PaymentType,
-                     string? OrderComment)
+    public OrderInfo(DateTime OrderDate)
     {
         this.OrderDate = OrderDate;
-        this.PaymentType = PaymentType;
-        this.OrderComment = OrderComment;
     }
 
     public DateTime OrderDate { get; private set; } = DateTime.Now;
-    public PaymentType PaymentType { get; set; }
-    public string? OrderComment { get; set; }
 }

@@ -47,8 +47,6 @@ public class CheckOutViewModelService : ICheckOutViewModelService
             TotalPrice = basket.Items.Sum(i => i.FullPrice),
             TotalItems = basket.TotalItems,
 
-            PaymentTypes = EnumHelper<PaymentType>.GetStaticDataFromEnum(PaymentType.Cash).ToList(),
-
             OrderItems = catalogItems.Select(i => new OrderItemViewModel()
             {
                 ProductId = i.Id,

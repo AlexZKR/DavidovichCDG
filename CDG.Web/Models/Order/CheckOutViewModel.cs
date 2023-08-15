@@ -13,15 +13,6 @@ public class CheckOutViewModel
     public bool IsInProccess { get; set; } = true;
     public string? OrderComment { get; set; }
 
-    //static data
-    [Display(Name = "Оплата")]
-    public List<SelectListItem>? PaymentTypes { get; set; }
-    [Display(Name = "Доставка")]
-    public List<SelectListItem>? DeliveryTypes { get; set; }
-    [Display(Name = "Область")]
-    public List<SelectListItem>? Regions { get; set; }
-
-
     //client data
     public string? BuyerId { get; set; }
 
@@ -40,18 +31,7 @@ public class CheckOutViewModel
     [DataType(DataType.EmailAddress, ErrorMessage = "Некорректный адрес эл. почты")]
     public string? Email { get; set; }
 
-    //address data
-    [Required (ErrorMessage = "Обязательное поле")]
-    [MaxLength (100, ErrorMessage = "Макс. длина 100 символов")]
-    public string? Street { get; set; }
-    [Required (ErrorMessage = "Обязательное поле")]
-    [MinLength (3, ErrorMessage = "Мин. длина 3 символа")]
-    [MaxLength (30, ErrorMessage = "Макс. длина 50 символов")]
-
     public string? City { get; set; }
-    [Required (ErrorMessage = "Обязательное поле")]
-    [RegularExpression(@"\d\d\d\d\d\d", ErrorMessage = "Некорректный почтовый индекс")]
-    public string? PostCode { get; set; }
 
     //select list filters
     public int Region { get; set; }

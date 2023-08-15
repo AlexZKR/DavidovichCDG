@@ -134,8 +134,6 @@ public class OrderController : Controller
 
         orderInfo = new OrderInfo
         {
-            PaymentType = (PaymentType)vm.PaymentType,
-            OrderComment = vm.OrderComment
         };
     }
 }

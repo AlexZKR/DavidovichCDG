@@ -49,8 +49,6 @@ public class OrderViewModelService : IOrderViewModelService
             Email = order.Buyer.Email,
             PhoneNumber = order.Buyer.PhoneNumber,
             OrderDate = order.OrderInfo.OrderDate.ToString("dd.MM.yyyy"),
-            OrderComment = order.OrderInfo.OrderComment,
-            PaymentType = EnumHelper<PaymentType>.GetDisplayValue(order.OrderInfo.PaymentType),
             Units = order.TotalItems,
 
             Items = order.OrderItems.Select(i => new OrderItemViewModel

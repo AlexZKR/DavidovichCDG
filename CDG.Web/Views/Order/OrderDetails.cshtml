@@ -57,7 +57,7 @@
                 <p class="text-muted mb-0 fw-bold">ИТОГО :</p>
             </div>
             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                <p class="text-muted mb-0">@Model.Units шт.</p>
+                <p class="text-muted mb-0">@Model.Units ед.</p>
             </div>
             <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
                 <p class="text-muted mb-0">@Model.TotalDiscount.ToString("N2") руб.</p>
@@ -89,24 +89,15 @@
             <td>
                 <p class="text-muted mb-0"><span class="fw-bold me-2">Номер телефона :</span> @Model.PhoneNumber</p>
             </td>
-            <td>
-                <p class="text-muted mb-0"><span class="fw-bold me-2">Доставка: </span> @Model.DeliveryType</p>
-            </td>
         </tr>
         <tr style="text-overflow: clip;">
             <td>
                 <p class="text-muted mb-0"><span class="fw-bold me-2">Эл. почта : </span>@Model.Email</p>
             </td>
-            <td>
-                <p class="text-muted mb-0"><span class="fw-bold me-2">Оплата : </span> @Model.PaymentType</p>
-            </td>
         </tr>
     </tbody>
 </table>
 <hr>
-<p class="text-muted mb-3"><span class="fw-bold me-2">Адрес : </span>@Model.PostCode, @Model.Region обл., @Model.City, @Model.Street</p>
-<p  class="text-muted mb-3"><span class="fw-bold me-2">Комментарии : </span> @Model.OrderComment</p>
-
                     <div class="card-footer border-0 px-4 py-5"
                         style="background-color: #59ab6e; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                         <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">ИТОГО:

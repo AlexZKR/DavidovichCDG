@@ -45,11 +45,11 @@
 
                         <ul class="list-inline">
                             <li class="list-inline-item">
-                                <h5>Автор:</h5>
+                                <h5>Категория:</h5>
                             </li>
-                            @* <li class="list-inline-item">
-                                <p class="text"><strong>@Model.AuthorName</strong></p>
-                            </li> *@
+                            <li class="list-inline-item">
+                                <p class="text"><strong>@Model.KeyCategoryName</strong></p>
+                            </li>
                         </ul>
 
                         <h5>Описание:</h5>
@@ -58,42 +58,10 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <th colspan="2">
-                                    <h5>Характеристики:</h5>
+                                    @* <h5>Характеристики:</h5> *@
                                 </th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayNameFor(m => m.Genre)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(m => m.Genre)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayNameFor(m => m.Language)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(m => m.Language)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayNameFor(m => m.Cover)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(m => m.Cover)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayNameFor(m => m.PagesCount)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(m => m.PagesCount)
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td>
                                         @Html.DisplayNameFor(m => m.IsAvailable)
