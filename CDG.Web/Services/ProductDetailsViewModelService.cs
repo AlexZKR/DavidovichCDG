@@ -43,8 +43,6 @@ public class ProductDetailsViewModelService : IProductDetailsViewModelService
             IsOnDiscount = false,
             IsFavourite = favouriteService.CheckIfFavourite(username, item),
 
-            Language = EnumHelper<Language>.GetDisplayValue(item.Language),
-
             //nav data
             KeyCategoryId = item.KeyCategory.Id,
             Username = username

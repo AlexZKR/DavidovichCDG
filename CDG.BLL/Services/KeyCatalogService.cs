@@ -23,10 +23,7 @@ public class DigitalKeyCatalogService : IDigitalKeyCatalogService
                                                   string? searchQuery,
                                                   int pageIndex = 0,
                                                   int itemsPage = SD.ITEMS_PER_PAGE,
-                                                  int? KeyCategoryId = 0,
-                                                  int? cover = null,
-                                                  int? genre = null,
-                                                  int? lang = null)
+                                                  int? category = 0)
     {
         logger.LogInformation("GetCatalogItems called");
 
@@ -34,7 +31,7 @@ public class DigitalKeyCatalogService : IDigitalKeyCatalogService
         if (searchQuery == null)
         {
             var paginatedFilterSpec =
-             new KeyCatalogFilterPaginatedSpecification(skip: itemsPage * pageIndex, take: itemsPage, KeyCategoryId, cover, genre, lang);
+             new KeyCatalogFilterPaginatedSpecification(skip: itemsPage * pageIndex, take: itemsPage, category);
 
             itemsOnPage = await DigitalKeyRepository.ListAsync(paginatedFilterSpec);
         }
@@ -65,9 +62,6 @@ public class DigitalKeyCatalogService : IDigitalKeyCatalogService
 
     public async Task<int> TotalItemsCountAsync(string? searchQuery,
                                                 int? KeyCategoryId,
-                                                int? cover,
-                                                int? genre,
-                                                int? lang,
                                                 int pageIndex = 0,
                                                 int itemsPage = SD.ITEMS_PER_PAGE)
     {
@@ -75,7 +69,7 @@ public class DigitalKeyCatalogService : IDigitalKeyCatalogService
         if (searchQuery == null)
         {
             var paginatedFilterSpec = new KeyCatalogFilterPaginatedSpecification(skip: itemsPage
-                * pageIndex, take: itemsPage, KeyCategoryId, cover, genre, lang);
+                * pageIndex, take: itemsPage, KeyCategoryId);
             int q = await DigitalKeyRepository.CountAsync(paginatedFilterSpec);
             logger.LogInformation($"CountAsync: {q} DigitalKeys in DB");
             return q;

@@ -32,15 +32,6 @@ public class DTOMapProfile : Profile
         CreateMap<KeyCategoryDTO, KeyCategory>().ReverseMap();
 
         CreateMap<DigitalKeyDTO, DigitalKey>().ReverseMap()
-            .ForMember(dest => dest.Language, opt => opt.MapFrom(src => ((int)src.Language)))
             .ForMember(dest => dest.Tag, opt => opt.MapFrom(src => ((int)src.Tag)));
-// CreateMap<DigitalKeyDTO, DigitalKey>()
-//         .ForMember(dest => dest.Cover, opt => opt.MapFrom(src => ((int)src.Cover!).ToString()))
-//         .ForMember(dest => dest.Language, opt => opt.MapFrom(src => ((int)src.Lang!).ToString()))
-//         .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => ((int)src.Genre!).ToString()));
-//         CreateMap<DigitalKey, DigitalKeyDTO>()
-//         .ForMember(dest => dest.Cover, opt => opt.MapFrom(src => (EnumHelper<Cover>.GetEnumValueFromString(src.Cover!))))
-//         .ForMember(dest => dest.Language, opt => opt.MapFrom(src => (EnumHelper<Language>.GetEnumValueFromString(src.Language!))))
-//         .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (EnumHelper<Genre>.GetEnumValueFromString(src.Genre!))))
     }
 }

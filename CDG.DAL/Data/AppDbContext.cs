@@ -37,8 +37,10 @@ public class AppDbContext : DbContext
         builder.Entity<Order>().OwnsOne(o => o.OrderInfo);
         builder.Entity<Order>().OwnsOne(o => o.Buyer);
 
-        //builder.Entity<Order>().HasMany(o => o.OrderItems);
-
+        builder.Entity<DigitalKey>()
+        .HasOne(e => e.KeyCategory)
+        .WithMany()
+        .HasForeignKey(e => e.CategoryId);
 
     }
 }

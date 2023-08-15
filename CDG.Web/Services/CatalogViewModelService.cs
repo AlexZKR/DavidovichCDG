@@ -31,11 +31,11 @@ public class DigitalKeyCatalogViewModelService : ICatalogViewModelService
         this.mapper = mapper;
     }
 
-    public async Task<CatalogViewModel> GetCatalogViewModel(string username, string? searchQuery, int pageIndex = 0, int itemsPage = SD.ITEMS_PER_PAGE, int KeyCategoryId = 0, int? cover = null, int? genre = null, int? lang = null)
+    public async Task<CatalogViewModel> GetCatalogViewModel(string username, string? searchQuery, int pageIndex = 0, int itemsPage = SD.ITEMS_PER_PAGE, int category = 0)
     {
         logger.LogInformation("GetCatalogItemsViewModels called");
 
-        List<DigitalKey> itemsOnPage = await DigitalKeyCatalogService.GetCatalogItems(username, searchQuery, pageIndex, itemsPage, KeyCategoryId, cover, genre, lang);
+        List<DigitalKey> itemsOnPage = await DigitalKeyCatalogService.GetCatalogItems(username, searchQuery, pageIndex, itemsPage, category);
 
         var vm = new CatalogViewModel()
         {
@@ -55,14 +55,13 @@ public class DigitalKeyCatalogViewModelService : ICatalogViewModelService
             FilterInfo = new CatalogFilterViewModel()
             {
                 SearchQuery = searchQuery,
-                Languages = EnumHelper<Language>.GetStaticDataFromEnum(Language.Russian).ToList(),
                 KeyCategorys = (await GetKeyCategorysSelectList()).ToList(),
             },
             PaginationInfo = new PaginationViewModel()
             {
                 ActualPage = pageIndex,
                 ItemsOnPage = itemsOnPage.Count,
-                TotalItems = await DigitalKeyCatalogService.TotalItemsCountAsync(searchQuery, KeyCategoryId, cover, genre, lang, pageIndex, itemsPage),
+                TotalItems = await DigitalKeyCatalogService.TotalItemsCountAsync(searchQuery, category, pageIndex, itemsPage),
             }
         };
 

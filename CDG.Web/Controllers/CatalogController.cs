@@ -26,14 +26,11 @@ public class CatalogController : Controller
     }
     public async Task<IActionResult> Index([FromQuery] string? SearchQuery,
                                            int? pageId,
-                                           int author,
-                                           int? cover,
-                                           int? genre,
-                                           int? lang)
+                                           int keyCategory)
     {
         string username = HttpContext.GetUsername();
         var catalogModel = await catalogViewModelService
-        .GetCatalogViewModel(username, SearchQuery, pageId ?? 0, genre: genre, lang: lang!, cover: cover);
+        .GetCatalogViewModel(username, SearchQuery, pageId ?? 0, category: keyCategory);
 
         return View(catalogModel);
     }
