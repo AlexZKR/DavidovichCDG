@@ -16,13 +16,13 @@ public class OrderItem : BaseEntity, IAggregateRoot
         double Discount,
         int Units)
     {
-
         this.ProductId = ProductId;
         this.ProductName = ProductName;
         this.FullPrice = FullPrice;
         this.Discount = Discount;
         this.Units = Units;
     }
+
     public int OrderId { get; set; }
     public int ProductId { get; set; }
     public string? ProductName { get; set; }

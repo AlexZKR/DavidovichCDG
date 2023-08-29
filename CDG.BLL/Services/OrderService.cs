@@ -15,6 +15,9 @@ public class OrderService : IOrderService
     private readonly IAppLogger<OrderService> logger;
     private readonly IRepository<OrderItem> orderItemsRepository;
 
+    private static Random random = new Random();
+
+
     public OrderService(IRepository<Order> orderRepository,
     IBasketService basketService,
     IRepository<BaseProduct> productRepository,
@@ -33,6 +36,10 @@ public class OrderService : IOrderService
         logger.LogInformation($"Creating order for userId: {buyer.BuyerId}");
         var basket = await basketService.GetBasketAsync(buyer.BuyerId);
         var orderItems = await MapBasketItems(basket.Items);
+
+        //unique key generation
+
+
         var order = new Order(buyer, orderInfo)
         {
             OrderItems = orderItems,
@@ -129,7 +136,7 @@ public class OrderService : IOrderService
         //set non proccessed orders count for api notification
         foreach (var item in buyers)
         {
-            if(item.Buyer.BuyerId == null) throw new NotFoundException($"User was not found");
+            if (item.Buyer.BuyerId == null) throw new NotFoundException($"User was not found");
             var countSpec = new UnproccessedByUserNameSpecification(item.Buyer.BuyerId);
             item.Buyer.UnproccessedOrdersCount = await orderRepository.CountAsync(countSpec);
         }
@@ -143,4 +150,12 @@ public class OrderService : IOrderService
         await orderRepository.UpdateAsync(order);
         return order;
     }
+
+    public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
 }

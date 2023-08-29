@@ -11,10 +11,6 @@ public class DigitalKey : BaseProduct, IAggregateRoot
 
     [DataType(DataType.Text)]
     [StringLength(500)]
-    public string Key { get; set; }
-
-    [DataType(DataType.Text)]
-    [StringLength(500)]
     [Display(Name = "Тэг")]
     public Tag Tag { get; set; } = Tag.None;
 
@@ -24,8 +20,7 @@ public class DigitalKey : BaseProduct, IAggregateRoot
     [Display(Name = "Категория")]
     public KeyCategory KeyCategory { get; set; } = null!;
 
-    public DigitalKey(string key)
+    public DigitalKey()
     {
-        Key = key;
     }
 }

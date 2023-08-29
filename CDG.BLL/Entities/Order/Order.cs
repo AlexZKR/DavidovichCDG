@@ -6,6 +6,9 @@ namespace CDG.BLL.Entities.Order;
 
 public class Order : BaseEntity, IAggregateRoot
 {
+    
+
+
     public bool IsInProcess { get; set; } = true;
     public int TotalItems => OrderItems.Sum(i => i.Units);
     public double TotalDiscount => OrderItems.Sum(i => i.TotalPrice - i.DiscountedPrice);
