@@ -80,6 +80,9 @@ public class OrderController : Controller
         MapCheckoutVm(vm, out Buyer buyer, out OrderInfo orderInfo);
         Order order = await orderService.CreateOrderAsync(buyer, orderInfo);
         var orderVm = await orderViewModelService.CreateOrderViewModelAsync(order.Id);
+
+        
+
         return View("OrderDetails",orderVm);
     }
 

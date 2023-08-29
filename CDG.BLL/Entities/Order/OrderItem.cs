@@ -31,6 +31,6 @@ public class OrderItem : BaseEntity, IAggregateRoot
     public double DiscountedPrice => (FullPrice - (FullPrice * Discount)) * Units;
     public double Discount { get; set; }
     public int Units { get; set; }
-    public string? AddInfo { get; set; }
+    public string? Key { get; set; }
 
 }

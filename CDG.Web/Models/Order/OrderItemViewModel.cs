@@ -8,5 +8,5 @@ public class OrderItemViewModel
     public double Discount { get; set; }
     public int Units { get; set; }
     public string? PictureUrl { get; set; }
-    public string? AddInfo { get; set; }
+    public string? Key { get; set; }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using CDG.BLL.Entities.BasketAggregate;
 using CDG.BLL.Entities.Order;
 using CDG.BLL.Entities.Products;
@@ -14,7 +15,7 @@ public class OrderService : IOrderService
     private readonly IRepository<BaseProduct> productRepository;
     private readonly IAppLogger<OrderService> logger;
     private readonly IRepository<OrderItem> orderItemsRepository;
-
+    private readonly IEmailSender emailSender;
     private static Random random = new Random();
 
 
@@ -22,13 +23,15 @@ public class OrderService : IOrderService
     IBasketService basketService,
     IRepository<BaseProduct> productRepository,
     IAppLogger<OrderService> logger,
-    IRepository<OrderItem> orderItemsRepository)
+    IRepository<OrderItem> orderItemsRepository,
+    IEmailSender emailSender)
     {
         this.orderRepository = orderRepository;
         this.basketService = basketService;
         this.productRepository = productRepository;
         this.logger = logger;
         this.orderItemsRepository = orderItemsRepository;
+        this.emailSender = emailSender;
     }
     public async Task<Order> CreateOrderAsync(Buyer buyer, OrderInfo orderInfo)
     {
@@ -38,13 +41,16 @@ public class OrderService : IOrderService
         var orderItems = await MapBasketItems(basket.Items);
 
         //unique key generation
-
+        orderItems.Select(x => { x.Key = RandomString(SD.KEY_SIZE); return x; }).ToList();
 
         var order = new Order(buyer, orderInfo)
         {
             OrderItems = orderItems,
         };
         await orderRepository.AddAsync(order);
+
+        //email sender (should not be there tbh)
+        await emailSender.SendOrderAsync(orderItems, buyer.Email!);
 
         //deleting basket
         //items in basket sold++
@@ -56,6 +62,8 @@ public class OrderService : IOrderService
 
         return order;
     }
+
+
 
     public async Task<List<Order>> GetBuyersOrdersAsync(string username)
     {

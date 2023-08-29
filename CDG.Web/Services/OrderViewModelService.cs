@@ -59,7 +59,7 @@ public class OrderViewModelService : IOrderViewModelService
                 DiscountedPrice = i.DiscountedPrice,
                 Discount = i.Discount,
                 Units = i.Units,
-                AddInfo = i.AddInfo
+                Key = i.Key
             }).ToList(),
         };
     }

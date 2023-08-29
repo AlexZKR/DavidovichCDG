@@ -7,4 +7,5 @@ public static class SD
     public const int ITEMS_PER_PAGE = 6;
     public const string DEFAULT_USERNAME = "Guest";
     public const string BASKET_ID = "BasketId";
+    public const int KEY_SIZE = 14;
 }

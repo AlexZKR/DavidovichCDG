@@ -20,13 +20,13 @@ public class Basket : BaseEntity, IAggregateRoot
 
     public void AddItem(int itemId, double fullPrice, double discount, string productName, int quantity = 1)
     {
-        if (!Items.Any(i => i.ProductId == itemId))
-        {
+        // if (!Items.Any(i => i.ProductId == itemId))
+        // {
             items.Add(new BasketItem(itemId, quantity, fullPrice, discount, productName));
             return;
-        }
-        var existingItem = Items.First(i => i.ProductId == itemId);
-        existingItem.AddQuantity(quantity);
+        // }
+        // var existingItem = Items.First(i => i.ProductId == itemId);
+        // existingItem.AddQuantity(quantity);
     }
 
     public void RemoveEmptyItems()
