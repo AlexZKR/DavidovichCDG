@@ -1,6 +1,6 @@
-namespace CDG.Admin.Models.Product;
+namespace CDG.Admin.ViewModels.Catalog;
 
-public class AuthorDTO
+public class KeyCategoryViewModel
 {
     public int Id { get; set; }
     public string? Name { get; set; }

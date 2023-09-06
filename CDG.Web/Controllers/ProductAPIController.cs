@@ -8,7 +8,7 @@ using CDG.BLL.Entities.Products;
 using CDG.Web.Models.KeyCategory;
 
 namespace CDG.Web.Controllers;
-[Route("api/DigitalKeys")]
+[Route("api/Keys")]
 
 public class ProductAPIController : ControllerBase
 {
@@ -48,7 +48,7 @@ public class ProductAPIController : ControllerBase
         return response;
     }
 
-    [HttpGet("KeyCategorys")]
+    [HttpGet("categories")]
     public async Task<ActionResult<object>> GetKeyCategorys()
     {
         try

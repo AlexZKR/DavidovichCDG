@@ -29,7 +29,7 @@ public class ProductsController : Controller
     {
         var vm = new ProductsPageViewModel();
 
-        var response = await productService.GetBooksPaged<ResponseDTO>(0, SD.PageSize);
+        var response = await productService.GetKeysPaged<ResponseDTO>(0, SD.PageSize);
         if (response != null && response.IsSuccess)
         {
             var list = JsonConvert.DeserializeObject<List<ProductDTO>>(Convert.ToString(response.Result)!);
@@ -52,7 +52,7 @@ public class ProductsController : Controller
     [HttpGet("GetProductsPage")]
     public async Task<ActionResult<object>> GetProductsPage(int page)
     {
-        var response = await productService.GetBooksPaged<ResponseDTO>(page, SD.PageSize);
+        var response = await productService.GetKeysPaged<ResponseDTO>(page, SD.PageSize);
         if (response != null && response.IsSuccess)
         {
             logger.LogInformation($"Sending request for page {page}");
@@ -70,14 +70,14 @@ public class ProductsController : Controller
     public async Task<ActionResult<object>> PaginationInfo()
     {
         logger.LogInformation("Sending page info");
-        var response = await productService.CountBooks<ResponseDTO>();
+        var response = await productService.CountKeys<ResponseDTO>();
         if (response != null && response.IsSuccess)
         {
             var dto = JsonConvert.DeserializeObject<CountDataDTO>(Convert.ToString(response.Result)!);
-            logger.LogInformation($"There are {dto!.BooksTotal} books.");
+            logger.LogInformation($"There are {dto!.KeysTotal} Keys.");
 
             return Json(new {
-                count = dto!.BooksTotal,
+                count = dto!.KeysTotal,
                 pageSize = SD.PageSize
             });
         }
@@ -87,16 +87,16 @@ public class ProductsController : Controller
         }
     }
 
-    [HttpGet("BookInfo")]
-    public async Task<IActionResult> BookInfo([FromQuery] int itemId)
+    [HttpGet("KeyInfo")]
+    public async Task<IActionResult> KeyInfo([FromQuery] int itemId)
     {
         var vm = new ProductViewModel();
 
-        var response = await productService.GetBookById<ResponseDTO>(itemId);
+        var response = await productService.GetKeyById<ResponseDTO>(itemId);
         if (response != null && response.IsSuccess)
         {
-            var book = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result)!);
-            vm = mapper.Map<ProductViewModel>(book);
+            var Key = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result)!);
+            vm = mapper.Map<ProductViewModel>(Key);
         }
         else
         {
@@ -113,9 +113,9 @@ public class ProductsController : Controller
 
     [HttpDelete]
     [QueryParameterConstraintAttribute("itemId")]
-    public async Task<ActionResult<object>> BookDelete([FromQuery] int itemId)
+    public async Task<ActionResult<object>> KeyDelete([FromQuery] int itemId)
     {
-        var response = await productService.DeleteBook<ResponseDTO>(itemId);
+        var response = await productService.DeleteKey<ResponseDTO>(itemId);
         if (response != null && response.IsSuccess)
         {
             if (Request.IsAjaxRequest())
@@ -152,12 +152,12 @@ public class ProductsController : Controller
     {
         var vm = new ProductViewModel();
 
-        var response = await productService.GetBookById<ResponseDTO>(id);
+        var response = await productService.GetKeyById<ResponseDTO>(id);
         if (response != null && response.IsSuccess)
         {
-            var book = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result)!);
-            vm = mapper.Map<ProductViewModel>(book);
-            vm.Authors = (await GetAuthorsSelectList()).ToList();
+            var Key = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result)!);
+            vm = mapper.Map<ProductViewModel>(Key);
+            vm.Categories = (await GetCategoriesSelectList()).ToList();
         }
         else
         {
@@ -168,9 +168,9 @@ public class ProductsController : Controller
             return View("ProductEdit", vm);
     }
 
-    [HttpPost("BookEdit")]
+    [HttpPost("KeyEdit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> BookEdit(ProductViewModel model)
+    public async Task<IActionResult> KeyEdit(ProductViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -180,7 +180,7 @@ public class ProductsController : Controller
             if(dto.Discount > 1)
                 dto.Discount = dto.Discount / 100;
             logger.LogInformation("Filename: " + dto.PictureUri);
-            await productService.UpdateBook<ResponseDTO>(dto);
+            await productService.UpdateKey<ResponseDTO>(dto);
             return RedirectToAction(nameof(Index));
         }
         model = await PopulateVMSelectLists(model);
@@ -194,9 +194,9 @@ public class ProductsController : Controller
         return View("ProductCreate", vm);
     }
 
-    [HttpPost("BookCreate")]
+    [HttpPost("KeyCreate")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> BookCreate(ProductViewModel model)
+    public async Task<IActionResult> KeyCreate(ProductViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -207,18 +207,18 @@ public class ProductsController : Controller
                 dto.PictureUri = Path.GetFileName(Request.Form.Files["picture"]!.FileName);
             if(dto.Discount > 1)
                 dto.Discount = dto.Discount / 100;
-            await productService.AddBook<ResponseDTO>(dto);
+            await productService.AddKey<ResponseDTO>(dto);
             return RedirectToAction(nameof(Index));
         }
         model = await PopulateVMSelectLists(model);
         return View("ProductCreate",model);
     }
 
-    private async Task<IEnumerable<SelectListItem>> GetAuthorsSelectList()
+    private async Task<IEnumerable<SelectListItem>> GetCategoriesSelectList()
     {
-        logger.LogInformation("GetAuthors called");
-        var response = await productService.GetAuthors<ResponseDTO>();
-        var authorNames = JsonConvert.DeserializeObject<List<AuthorDTO>>(Convert.ToString(response.Result)!);
+        logger.LogInformation("GetCategories called");
+        var response = await productService.GetCategories<ResponseDTO>();
+        var authorNames = JsonConvert.DeserializeObject<List<KeyCategoryDTO>>(Convert.ToString(response.Result)!);
         var items = authorNames!.Select(n => new SelectListItem() { Text = n.Name, Value = n.Id.ToString()})
             .OrderBy(n => n.Text)
             .ToList();
@@ -230,11 +230,8 @@ public class ProductsController : Controller
 
     private async Task<ProductViewModel> PopulateVMSelectLists(ProductViewModel vm)
     {
-        vm.Genres = EnumHelper<Genre>.GetStaticDataFromEnum(Genre.All).ToList();
-        vm.Covers = EnumHelper<Cover>.GetStaticDataFromEnum(Cover.All).ToList();
-        vm.Languages = EnumHelper<Language>.GetStaticDataFromEnum(Language.All).ToList();
         vm.Tags = EnumHelper<Tag>.GetStaticDataFromEnum(Tag.None).ToList();
-        vm.Authors = (await GetAuthorsSelectList()).ToList();
+        vm.Categories = (await GetCategoriesSelectList()).ToList();
         return vm;
     }
 }

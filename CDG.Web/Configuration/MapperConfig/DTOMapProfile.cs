@@ -18,7 +18,7 @@ public class DTOMapProfile : Profile
             .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.OrderInfo.OrderDate))
             .ForMember(dest => dest.BuyerName, opt => opt.MapFrom(src => (src.Buyer.FirstName + " " + src.Buyer.LastName)))
-            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Buyer.PhoneNumber))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Buyer.PhoneNumber))
             .ForMember(dest => dest.IsInProcess, opt => opt.MapFrom(src => src.IsInProcess));
 
         CreateMap<OrderItemDTO, OrderItem>().ReverseMap();

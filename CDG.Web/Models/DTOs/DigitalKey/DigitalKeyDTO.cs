@@ -5,13 +5,10 @@ public class DigitalKeyDTO
     public int Id { get; set; }
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
-    public int PagesCount { get; set; }
 
     //enums
-    public int? Language { get; set; }
     public int? Tag { get; set; }
     public int? KeyCategoryId { get; set; }
-    //public KeyCategoryDTO? KeyCategoryDTO { get; set; }
 
     //$$
     public double FullPrice { get; set; } = 0;

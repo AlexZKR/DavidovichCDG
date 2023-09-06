@@ -17,11 +17,7 @@ namespace CDG.Admin.ViewModels.Catalog
         [Display(Name = "Количество страниц")]
         [Required(ErrorMessage = "Обязательное поле")]
         [Range(0, int.MaxValue, ErrorMessage = "Не меньше нуля")]
-        public int PagesCount { get; set; }
 
-        public string? GenreDisplay { get; set; }
-        public string? CoverDisplay { get; set; }
-        public string? LanguageDisplay { get; set; }
         public string? TagDisplay { get; set; }
 
         [Display(Name = "Полная цена, руб.")]
@@ -47,32 +43,17 @@ namespace CDG.Admin.ViewModels.Catalog
         public double Rating { get; set; }
 
         //selectLists
-    [Display(Name = "Обложка")]
+    [Display(Name = "Категория")]
     [Required(ErrorMessage = "Обязательное поле")]
-    public int? Cover { get; set; }
-    [Display(Name = "Жанр")]
-    [Required(ErrorMessage = "Обязательное поле")]
-    public int? Genre { get; set; }
-    [Display(Name = "Язык")]
-    [Required(ErrorMessage = "Обязательное поле")]
-    public int? Lang { get; set; }
-    [Display(Name = "Автор")]
-    [Required(ErrorMessage = "Обязательное поле")]
-    public int? AuthorId { get; set; }
+    public int? KeyCategoryId { get; set; }
     [Display(Name = "Тэг")]
     [Required(ErrorMessage = "Обязательное поле")]
     public int? Tag { get; set; }
 
     //static data
-    [Display(Name = "Жанр")]
-    public List<SelectListItem>? Genres { get; set; }
-    [Display(Name = "Язык")]
-    public List<SelectListItem>? Languages { get; set; }
-    [Display(Name = "Обложка")]
-    public List<SelectListItem>? Covers { get; set; }
     [Display(Name = "Тэг")]
     public List<SelectListItem>? Tags { get; set; }
-    [Display(Name = "Автор")]
-    public List<SelectListItem>? Authors { get; set; }
+    [Display(Name = "Категория")]
+    public List<SelectListItem>? Categories { get; set; }
     }
 }

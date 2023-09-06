@@ -3,11 +3,11 @@ using CDG.Admin.Models.Product;
 namespace CDG.Admin.Interfaces;
 public interface IProductService : IBaseService
 {
-    Task<T> CountBooks<T>();
-    Task<T> GetBookById<T>(int id);
-    Task<T> GetBooksPaged<T>(int page, int pageSize);
-    Task<T> AddBook<T>(ProductDTO book);
-    Task<T> UpdateBook<T>(ProductDTO book);
-    Task<T> DeleteBook<T>(int id);
-    Task<T> GetAuthors<T>();
+    Task<T> CountKeys<T>();
+    Task<T> GetKeyById<T>(int id);
+    Task<T> GetKeysPaged<T>(int page, int pageSize);
+    Task<T> AddKey<T>(ProductDTO Key);
+    Task<T> UpdateKey<T>(ProductDTO Key);
+    Task<T> DeleteKey<T>(int id);
+    Task<T> GetCategories<T>();
 }

@@ -13,12 +13,12 @@ var app = builder.Build();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(@"E:\BSUIR\Diploma\Zakrevsky Diploma\CDG.Web\wwwroot","img","books")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(@"D:\Work\BSUIR\Davidovich\CDG.Admin\wwwroot","img")),
     RequestPath = "/Books"
 });
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(@"E:\BSUIR\Diploma\Zakrevsky Diploma\CDG.Admin\wwwroot","img")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(@"D:\Work\BSUIR\Davidovich\CDG.Admin\wwwroot","img")),
     RequestPath = "/img"
 });
 
